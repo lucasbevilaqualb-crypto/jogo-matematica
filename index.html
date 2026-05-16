@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz de Matemática 🎮</title>
+
+  <!--
+    ============================================================
+    MATHQUEST — Jogo de Matemática Web
+    ============================================================
+    Este arquivo é o HTML — a ESTRUTURA do jogo.
+    Pense nele como o "esqueleto" da página.
+
+    Os outros arquivos são:
+      style.css  → a APARÊNCIA (cores, tamanhos, fontes)
+      script.js  → o COMPORTAMENTO (regras, lógica do jogo)
+  -->
+
+  <!-- Conecta o arquivo de estilos -->
+  <link rel="stylesheet" href="style.css" />
+
+  
+  <!--
+    manifest.json → diz ao celular como instalar o app:
+    nome, cor, ícone, se abre em tela cheia, etc.
+  -->
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Cor da barra de status do celular (sinal, bateria, relógio) -->
+  <meta name="theme-color" content="#f9c80e" />
+
+  <!--
+    Tags para iPhone/iPad — o iOS não lê o manifest.json
+    completamente, então precisamos desses extras.
+  -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Quiz de Matemática" />
+  <link rel="apple-touch-icon" href="icone-192.png" />
+
+</head>
+
+<body>
+
+  <!--
+    #app é o container principal.
+    Tudo que o jogador vê fica dentro dele.
+  -->
+  <div id="app">
+
+    <!-- ====================================================
+         TELA 1: INÍCIO
+         Nessa tela fica as informações do Jogo de perguntas e respostas...
+    ==================================================== -->
+    <div id="tela-inicio" class="tela">
+      <p class="titulo-jogo">⚡ Quiz de Matemática</p>
+      <p class="subtitulo">20 perguntas · 3 vidas · Bora treinar!</p>
+      <p class="descricao">Fácil → Médio → Difícil</p>
+
+      <!--
+       Quando clicamos no botão "JOGAR", é chamada a função "iniciarJogo()" no Script.js
+      -->
+      <button class="btn-jogar" onclick="iniciarJogo()">▶ JOGAR</button>
+      <!-- 
+      Ao clicar em "JOGAR", essa TELA 1 por id= "tela-inicio" recebe um display="none" e fica escondida
+      E a TELA 2 por id="tela-jogo" recebe um display="block" e aparece 
+      -->
+      <div class="rodapé">
+        <h4>CETI José Mendes Vasconcelos</h4>
+        <h4>1º Ano do Ensino Médio</h4>
+        <h4>Programação para Jogos Digitais</h4>
+      </div>
+      
+    </div>
+
+    <!-- ====================================================
+         TELA 2: JOGO
+         Essa tela é onde vai ser feita as 20 perguntas... 
+    ==================================================== -->
+    <div id="tela-jogo" class="tela escondido">
+
+      <!-- HUD = Heads-Up Display = informações do jogo no topo -->
+       <!-- 
+        No Script, manipulamos essas informações  de acordo com o andamento do jogo 
+       -->
+      <div id="hud">
+        <span id="pontos">0 pts</span>    <!-- Pontuação atual -->
+        <span id="vidas">❤️❤️❤️</span>   <!-- 3 corações de vida -->
+        <span id="contador">1 / 20</span> <!-- Número da pergunta -->
+      </div>
+
+      <!-- Barra que vai enchendo conforme avança nas perguntas -->
+      <div id="barra-fundo">
+        <div id="barra-progresso"></div>
+      </div>
+
+      <!-- bandeira que muda de cor conforme a dificuldade -->
+      <div id="badge-dificuldade">FÁCIL</div>
+
+      <!-- Caixa onde aparece o texto da pergunta -->
+      <div id="quadro-pergunta">
+        <p id="texto-pergunta">Carregando...</p>
+      </div>
+
+      <!--
+        Grade com os 4 botões de resposta.
+        Os botões são criados pelo script.js (função criarBotoes).
+        O HTML deixa a "caixinha" vazia — o JS preenche.
+      -->
+      <div id="grade-respostas"></div>
+
+      <!-- Mensagem de acerto ou erro — aparece após clicar -->
+      <div id="feedback"></div>
+
+    </div>
+
+
+    <!-- ====================================================
+         TELA 3: VITÓRIA
+         Aparece quando o jogador responde as 20 perguntas.
+         Começa escondida.
+    ==================================================== -->
+    <div id="tela-vitoria" class="tela escondido">
+      <p class="icone-final">🏆</p>
+      <p class="titulo-final amarelo">VOCÊ VENCEU!</p>
+
+      <!-- Rank calculado pelo script.js: S / A / B / C -->
+      <p id="rank-final" class="rank">A</p>
+
+      <p class="info-final">Pontuação: <strong id="pontos-vitoria">0</strong></p>
+      <p class="info-final">Vidas restantes: <strong id="vidas-vitoria">0</strong></p>
+
+      <hr class="separador" />
+      <button class="btn-jogar" onclick="iniciarJogo()">↺ Jogar Novamente</button>
+    </div>
+
+
+    <!-- ====================================================
+         TELA 4: GAME OVER
+         Aparece quando as 3 vidas acabam.
+         Começa escondida.
+    ==================================================== -->
+    <div id="tela-gameover" class="tela escondido">
+      <p class="icone-final">💀</p>
+      <p class="titulo-final vermelho">GAME OVER</p>
+      <p class="info-final">Pontuação: <strong id="pontos-gameover">0</strong></p>
+      <p class="info-final">Continue praticando! 💪</p>
+
+      <hr class="separador" />
+      <button class="btn-jogar" onclick="iniciarJogo()">↺ Tentar Novamente</button>
+    </div>
+
+
+  </div><!-- fim do #app -->
+
+
+  <!--
+    Conecta o arquivo de lógica.
+    Fica no FIM do body para garantir que o HTML
+    já foi carregado antes do JavaScript rodar.
+  -->
+  <script src="script.js"></script>
+
+  <script>
+    /*
+      Registro do Service Worker
+      --------------------------
+      Verifica se o navegador suporta SW (todos os modernos suportam).
+      Se sim, registra sw.js como o Service Worker do app.
+      Isso ativa o modo offline automaticamente.
+    */
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js")
+        .then(function() {
+          console.log("Service Worker registrado! Jogo funciona offline.");
+        })
+        .catch(function(erro) {
+          console.log("Erro ao registrar Service Worker:", erro);
+        });
+    }
+  </script>
+
+</body>
+</html>

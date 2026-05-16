@@ -1,0 +1,404 @@
+/*
+  ============================================================
+  MATHQUEST — style.css
+  ============================================================
+  Este arquivo cuida da APARÊNCIA do jogo.
+  Aqui definimos cores, tamanhos, fontes e animações.
+
+  DICA PARA INICIANTES:
+  CSS funciona assim:
+    seletor { propriedade: valor; }
+
+  Seletor pode ser:
+    p         → seleciona todas as tags <p>
+    .classe   → seleciona elementos com class="classe"
+    #id       → seleciona o elemento com id="id"
+  ============================================================
+*/
+
+
+/* ============================================================
+   VARIÁVEIS CSS
+   ============================================================
+   Variáveis guardam valores que usamos várias vezes.
+   Definidas em :root, ficam disponíveis em todo o arquivo.
+   Para mudar a cor do jogo inteiro, basta alterar aqui!
+============================================================ */
+:root {
+  --cor-fundo:      #0f0e1a;   /* fundo escuro da página     */
+  --cor-painel:     #1a18309a;   /* cor dos painéis/telas      */
+  --cor-borda:      #2e2b50;   /* bordas sutis               */
+  --cor-texto:      #f0eeff;   /* texto principal (claro)    */
+  --cor-destaque:   #f9c80e;   /* amarelo ouro               */
+  --cor-verde:      #3ecf6e;   /* cor de acerto              */
+  --cor-vermelho:   #e05252;   /* cor de erro                */
+  --cor-cinza:      #444263;   /* botão desativado           */
+
+  /* Cores dos 4 botões de resposta */
+  --cor-btn-a:      #2563eb;   /* azul   */
+  --cor-btn-b:      #16a34a;   /* verde  */
+  --cor-btn-c:      #d97706;   /* laranja*/
+  --cor-btn-d:      #9333ea;   /* roxo   */
+}
+
+
+/* ============================================================
+   RESET BÁSICO
+   ============================================================
+   Cada navegador tem estilos padrão diferentes.
+   O "reset" remove esses padrões para começarmos do zero.
+============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* padding não estoura o tamanho do elemento */
+}
+
+
+/* ============================================================
+   BODY — CORPO DA PÁGINA
+============================================================ */
+body {
+  background-image: url('src/background-img.png');
+  background-size: cover; /* Faz a imagem cobrir todo o fundo */
+  background-position: center; /* Centraliza a imagem */
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  color: var(--cor-texto);
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;       /* ocupa pelo menos toda a altura da tela */
+
+  /* Flexbox: centraliza o conteúdo na tela */
+  display: flex;
+  align-items: center;     /* centraliza verticalmente   */
+  justify-content: center; /* centraliza horizontalmente */
+  padding: 20px;
+}
+
+
+/* ============================================================
+   CONTAINER PRINCIPAL (#app)
+   Limita a largura máxima do jogo a 520px.
+============================================================ */
+#app {
+  width: 100%;
+  max-width: 520px;
+}
+
+
+/* ============================================================
+   TELAS (.tela)
+   Cada "tela" do jogo (início, jogo, vitória, game over)
+   tem este estilo base.
+============================================================ */
+.tela {
+  background: var(--cor-painel);
+   backdrop-filter: blur(12px); /* Aplica o desfoque no que está atrás */
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--cor-borda);
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  max-height: 80vh;
+}
+.rodapé{
+  margin-top: 75px;
+}
+
+/* A classe .escondido usa display:none para sumir da tela */
+.escondido {
+  display: none;
+}
+
+
+/* ============================================================
+   TELA DE INÍCIO — textos e botão
+============================================================ */
+.titulo-jogo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--cor-destaque);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+
+.subtitulo {
+  font-size: 0.95rem;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.descricao {
+  font-size: 0.85rem;
+  color: #cccbce;
+  margin-bottom: 28px;
+}
+
+
+/* ============================================================
+   BOTÃO PRINCIPAL (Jogar / Jogar Novamente)
+============================================================ */
+.btn-jogar {
+  background: var(--cor-destaque);
+  color: #111;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  /* Sombra inferior cria efeito 3D */
+  box-shadow: 0 4px 0 #b8920a;
+
+  /* transition: anima suavemente as mudanças */
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+/* Hover = quando o mouse passa por cima */
+.btn-jogar:hover {
+  transform: translateY(-2px);  /* sobe 2px */
+  box-shadow: 0 6px 0 #b8920a;
+}
+
+/* Active = quando está sendo clicado */
+.btn-jogar:active {
+  transform: translateY(2px);   /* desce 2px */
+  box-shadow: 0 2px 0 #b8920a;
+}
+
+
+/* ============================================================
+   HUD (barra de status: pontos, vidas, contador)
+============================================================ */
+#hud {
+  display: flex;
+  justify-content: space-between; /* distribui os 3 itens */
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+#pontos {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cor-destaque);
+}
+
+#vidas {
+  font-size: 1.3rem;
+  letter-spacing: 3px;
+}
+
+#contador {
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   BARRA DE PROGRESSO
+============================================================ */
+#barra-fundo {
+  background: var(--cor-borda);
+  border-radius: 99px;
+  height: 6px;
+  margin-bottom: 16px;
+  overflow: hidden; /* esconde o que passar do limite */
+}
+
+#barra-progresso {
+  height: 100%;
+  background: var(--cor-destaque);
+  border-radius: 99px;
+  width: 0%;        /* começa zerada — o JS vai atualizar */
+  transition: width 0.4s ease; /* anima o crescimento */
+}
+
+
+/* ============================================================
+   BADGE DE DIFICULDADE
+============================================================ */
+#badge-dificuldade {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 99px;
+  margin-bottom: 14px;
+  letter-spacing: 1px;
+}
+
+/* O JS adiciona uma dessas 3 classes conforme a dificuldade */
+.badge-facil   { background: #14532d; color: #4ade80; }
+.badge-medio   { background: #78350f; color: #fcd34d; }
+.badge-dificil { background: #7f1d1d; color: #f87171; }
+
+
+/* ============================================================
+   QUADRO DA PERGUNTA
+============================================================ */
+#quadro-pergunta {
+  background: #12102a;
+  border: 1px solid var(--cor-borda);
+  border-top: 3px solid var(--cor-destaque);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+#texto-pergunta {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.5;
+  min-height: 48px; /* garante altura mínima mesmo com texto curto */
+}
+
+
+/* ============================================================
+   GRADE DOS BOTÕES DE RESPOSTA
+============================================================ */
+#grade-respostas {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 colunas iguais */
+  gap: 12px;
+}
+
+/* Estilo base de cada botão de resposta */
+.btn-resposta {
+  padding: 18px 12px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.3); /* sombra 3D */
+  transition: transform 0.12s, filter 0.12s;
+}
+
+.btn-resposta:hover {
+  filter: brightness(1.2); /* clareia o botão */
+  transform: translateY(-2px);
+}
+
+.btn-resposta:active {
+  transform: translateY(2px);
+  border-bottom-width: 1px;
+}
+
+/* Cada botão tem uma cor diferente usando nth-child */
+.btn-resposta:nth-child(1) { background: var(--cor-btn-a); } /* azul   */
+.btn-resposta:nth-child(2) { background: var(--cor-btn-b); } /* verde  */
+.btn-resposta:nth-child(3) { background: var(--cor-btn-c); } /* laranja*/
+.btn-resposta:nth-child(4) { background: var(--cor-btn-d); } /* roxo   */
+
+/* Botão desativado após o jogador responder */
+.btn-resposta:disabled {
+  cursor: default;
+  opacity: 0.4;
+  transform: none;
+  filter: none;
+}
+
+/* Classe adicionada pelo JS quando a resposta é CERTA */
+.btn-certo {
+  background: var(--cor-verde) !important; /* !important sobrescreve a cor original */
+  opacity: 1 !important;
+  animation: pulso 0.35s ease;
+}
+
+/* Classe adicionada pelo JS quando a resposta é ERRADA */
+.btn-errado {
+  background: var(--cor-vermelho) !important;
+  opacity: 1 !important;
+  animation: balanco 0.35s ease;
+}
+
+
+/* ============================================================
+   FEEDBACK (mensagem de acerto/erro)
+============================================================ */
+#feedback {
+  margin-top: 14px;
+  padding: 13px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: none; /* escondido por padrão — o JS mostra */
+}
+
+.feedback-certo  { background: #14532d; color: #4ade80; }
+.feedback-errado { background: #7f1d1d; color: #f87171; }
+
+
+/* ============================================================
+   TELAS FINAIS (vitória e game over)
+============================================================ */
+.icone-final {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+}
+
+.titulo-final {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+/* Classes de cor aplicadas no HTML */
+.amarelo  { color: var(--cor-destaque); }
+.vermelho { color: var(--cor-vermelho); }
+
+/* Rank grande (S / A / B / C) */
+.rank {
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--cor-destaque);
+  margin: 10px 0;
+}
+
+.info-final {
+  color: #fafafa;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.separador {
+  border: none;
+  border-top: 1px solid var(--cor-borda);
+  margin: 20px 0;
+}
+
+
+/* ============================================================
+   ANIMAÇÕES
+   @keyframes define o "roteiro" da animação.
+   O nome depois de @keyframes é usado em animation: nome.
+============================================================ */
+
+/* Pulso: cresce levemente e volta — usado no acerto */
+@keyframes pulso {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+/* Balanço: agita para os lados — usado no erro */
+@keyframes balanco {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-7px); }
+  75%       { transform: translateX(7px); }
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — adapta para telas menores (celular)
+   @media: aplica estilos apenas quando a condição é verdadeira
+============================================================ */
+@media (max-width: 500px) {
+  .titulo-jogo    { font-size: 2rem; }
+  #texto-pergunta { font-size: 1.1rem; }
+  .btn-resposta   { padding: 14px 8px; font-size: 1rem; }
+  body{
+    background-image: url('src/bg-smartphone.png');
+  }
+}
