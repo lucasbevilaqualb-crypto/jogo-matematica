@@ -81,7 +81,7 @@ body {
 ============================================================ */
 #app {
   width: 100%;
-  max-width: 520px;
+  max-width: 90vh;
 }
 
 
@@ -121,6 +121,13 @@ body {
   margin-bottom: 8px;
 }
 
+.titulo-curso {
+  font-size: 1rem;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  margin-top: -5px;
+}
 .subtitulo {
   font-size: 0.95rem;
   color: #ffffff;
@@ -401,4 +408,11 @@ body {
   body{
     background-image: url('src/bg-smartphone.png');
   }
+  .titulo-curso {
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  margin: 2px;
+}
 }
